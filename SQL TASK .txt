@@ -1,0 +1,103 @@
+SQL TASK 
+
+
+
+1)
+
+QUERIES:
+
+a)SELECT ename,sal FROM employee
+
+smith	800
+anya	1600
+seth	1250
+mahadevan	2985
+momin	1250
+bina	2850
+shivansh	2450
+scott	3000
+amir	5000
+kuldeep	1500
+
+SELECT ename,sal FROM employee
+WHERE sal>=2200;
+
+mahadevan	2985
+bina	2850
+shivansh	2450
+scott	3000
+amir	5000
+
+b) SELECT* FROM employee
+WHERE comm is null;
+
+8369	smith	clerk	8902	1990-12-18	800		20
+8566	mahadevan	manager	8839	1991-04-02	2985		20
+8698	bina	manager	8839	1991-05-01	2850		30
+8882	shivansh	manager	8839	1991-06-09	2450		10
+8888	scott	analyst	8566	1992-12-09	3000		20
+8839	amir	president		1991-11-18	5000		10
+
+
+c)SELECT ename , sal FROM employee
+WHERE sal<2500 OR sal>4000;
+
+smith	800
+anya	1600
+seth	1250
+momin	1250
+shivansh	2450
+amir	5000
+kuldeep	1500
+
+d)SELECT ename , job , sal FROM employee
+WHERE mgr is null;
+
+amir	president	5000
+
+e)SELECT ename FROM employee
+WHERE SUBSTRING(ename,3,1)='A';
+
+f)SELECT ename FROM employee
+WHERE SUBSTRING(ename,-1)='T';
+ 
+scott
+
+
+2)
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
+public class Jdbc {
+
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/jdbc";
+        String user = "pravee";
+        String password = "password";
+        String insertQuery = "INSERT INTO employees (empno, ename, job, mgr, hiredate, sal, comm, deptno) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try (
+            // Establish a connection
+            Connection connection = DriverManager.getConnection(url, user, password);
+            PreparedStatement preparedStatement = connection.prepareStatement(insertQuery)
+        ) {
+          
+            preparedStatement.setInt(1, 8369);
+            preparedStatement.setString(2, "Employee1");
+            preparedStatement.setString(3, "Job1");
+            preparedStatement.setInt(4, 1234);
+            preparedStatement.setString(5, "2023-01-01");
+            preparedStatement.setDouble(6, 50000.00);
+            preparedStatement.setDouble(7, 2000.00);
+            preparedStatement.setInt(8, 10);
+            preparedStatement.executeUpdate();
+
+            System.out.println("Data inserted");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
